@@ -1,10 +1,13 @@
 <template>
     <md-toolbar class="main-header">
-        <div class="md-toolbar-row">
-                <h1>
-                    OpenAlex
-                </h1>
-                <search-box/>
+        <div class="brands">
+            <h2>
+                Open Science Dashboard
+            </h2>
+            <h1>
+                National Institutes of Mental Health
+            </h1>
+
         </div>
     </md-toolbar>
 
@@ -13,20 +16,21 @@
 
 <script>
 
-    import SearchBox from "./SearchBox";
     export default {
-        components: {SearchBox},
         name: 'MainHeader'
     }
 </script>
 
 <style scoped lang="scss">
-    h1 {
-        width: 140px;
-        margin:0;
-        display:block;
-        font-size: 20px;
-        text-align: center;
+    h2 {
+        margin: 20px 10px 10px 10px;
+        font-weight: 300;
+        font-size: 16px;
     }
+    h1 {
+        margin: 10px;
+        margin-bottom: 20px;
+    }
+
 
 </style>

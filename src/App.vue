@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="container">
-
+    <main-header/>
     <div class="container-wrapper md-layout-row">
       <router-view/>
     </div>
@@ -15,9 +15,13 @@
 </template>
 
 <script>
+  import MainHeader from './components/MainHeader'
 
   export default {
       name: 'App',
+      components: {
+        MainHeader
+      },
       metaInfo: {
         // if no subcomponents specify a metaInfo.title, this title will be used
         title: 'FindScience.org',
