@@ -2,45 +2,40 @@
     <div class="page person">
 
 
-        <h2>
-            <div class="back">
+        <div class="page-header">
+            <div class="back-link">
                 <router-link to="/">
-                    < back
+                    <i class="fas fa-chevron-left"></i>
+                    Principal Investigators
                 </router-link>
             </div>
-            <span class="given-names">
-            {{ name.given }}
-            {{ name.middle }}
-          </span>
-            <span class="family-names">
-            {{ name.family }}
-          </span>
-            <span class="suffix-names">
-            {{ name.suffix }}
-          </span>
-        </h2>
+            <h2 class="page-heading">
+                <span class="given-names">
+                {{ name.given }}
+                {{ name.middle }}
+              </span>
+                <span class="family-names">
+                {{ name.family }}
+              </span>
+                <span class="suffix-names">
+                {{ name.suffix }}
+              </span>
+            </h2>
+        </div>
+
+
+        <div class="section-header">
+            <h3>
+                Papers
+                <span class="num">({{ searchedPapers.length }})</span>
+            </h3>
+            <p>Click a paper to view it on PubMed</p>
+        </div>
 
         <md-table v-model="searchedPapers" md-sort="metadata.year" md-sort-order="asc" >
-            <md-table-toolbar>
-                <div class="md-toolbar-section-start">
-                    <h3>
-                        Papers
-                        <span class="num">({{ searchedPapers.length }})</span>
-                    </h3>
 
-                </div>
 
-                <!--<md-field md-clearable class="md-toolbar-section-end">-->
-                <!--<md-input placeholder="Search by PI name..." v-model="search" @input="searchOnTable" />-->
-                <!--</md-field>-->
-            </md-table-toolbar>
-
-            <!--<md-table-empty-state-->
-            <!--md-label="No users found"-->
-            <!--:md-description="`No user found for this '${search}' query. Try a different search term or create a new user.`">-->
-            <!--</md-table-empty-state>-->
-
-            <md-table-row slot="md-table-row" slot-scope="{ item }">
+            <md-table-row slot="md-table-row" slot-scope="{ item }" v-on:click="goToPubmed(item.pmid)">
                 <md-table-cell md-label="year" md-sort-by="metadata.year">
                     {{ item.metadata.year }}
                 </md-table-cell>
@@ -48,9 +43,21 @@
                     {{ item.metadata.title }}
                 </md-table-cell>
 
-                <md-table-cell md-label="Paper" md-sort-by="is_open.paper" md-boolean>{{ item.is_open.paper }}</md-table-cell>
-                <md-table-cell md-label="Data" md-sort-by="is_open.data" md-boolean>{{ item.is_open.data }}</md-table-cell>
-                <md-table-cell md-label="Code" md-sort-by="is_open.code" md-boolean>{{ item.is_open.code }}</md-table-cell>
+                <md-table-cell md-label="Paper" md-sort-by="is_open.paper" md-boolean>
+                    <i class="fas fa-check" v-if="item.is_open.paper"></i>
+                    <i class="fas fa-times" v-if="!item.is_open.paper"></i>
+                </md-table-cell>
+
+                <md-table-cell md-label="Data" md-sort-by="is_open.data" md-boolean>
+                    <i class="fas fa-check" v-if="item.is_open.data"></i>
+                    <i class="fas fa-times" v-if="!item.is_open.data"></i>
+                </md-table-cell>
+
+                <md-table-cell md-label="Code" md-sort-by="is_open.code" md-boolean>
+                    <i class="fas fa-check" v-if="item.is_open.code"></i>
+                    <i class="fas fa-times" v-if="!item.is_open.code"></i>
+                </md-table-cell>
+
 
 
 
@@ -74,6 +81,7 @@
 
 <script>
     import axios from 'axios'
+
     const toLower = text => {
         return text.toString().toLowerCase()
     }
@@ -93,25 +101,39 @@
             papers: [],
             search: null,
             searchedPapers: [],
-            name: {}
+            name: {},
+            webpage: null
         }),
         components: {
             axios
         },
-        metaInfo: {
-            title: 'Papers'
+        metaInfo() {
+            return {
+                title: this.fullName
+            }
         },
         computed: {
+            fullName() {
+                if (this.name){
+                    return this.name.given + " "
+                        + this.name.middle + " "
+                        + this.name.family
+                }
+                else {
+                    return "Unknown name"
+                }
+            }
         },
         methods: {
+            goToPubmed(pmid){
+                window.location.href = "https://www.ncbi.nlm.nih.gov/pubmed/" + pmid
+            },
             loadPapers() {
                 console.log("loading papers!")
                 let personId = this.$route.params.id
                 let url = "http://osat-api.herokuapp.com/person/" + personId
                 axios.get(url)
                     .then(resp => {
-
-
 
                         let papers = resp.data.papers.map(function(paper){
                             let ret = paper
@@ -122,6 +144,7 @@
                         })
 
                         this.name = resp.data.name
+                        this.webpage = resp.data.nih_webpage
                         this.searchedPapers = papers
                         this.loading = false
                     })
@@ -140,16 +163,35 @@
 
 <style scoped lang="scss">
 
-    .back {
-        font-size: 50%;
+    .page-header {
+        h2 {
+            margin: 0;
+        }
+        .suffix-names {
+            font-size: 50%;
+        }
+    }
+    .section-header {
+        margin-top: 10px;
+        h3 {
+            margin: 0;
+        }
+        p {
+            margin: 0;
+            font-size: 12px;
+        }
     }
 
-    .suffix-names {
-        font-size: 50%;
+    .fa-times {
+        opacity: .5;
+        color: red;
     }
-    h2 span.num {
-        font-size: 50%;
+    .fa-check {
+        color: green;
+    }
 
+    td {
+        cursor: pointer
     }
 
 

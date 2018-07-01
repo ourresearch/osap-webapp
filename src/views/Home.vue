@@ -1,19 +1,29 @@
 <template>
   <div class="page home">
 
-<md-table v-model="searchedPersons" md-sort="name.family" md-sort-order="asc" >
-      <md-table-toolbar>
-        <div class="md-toolbar-section-start">
-          <h2>
-            People
-            <span class="num">({{ searchedPersons.length }})</span>
-          </h2>
-        </div>
+    <!--<div class="section-header pis">-->
+      <!--<h2>-->
+        <!--History-->
+        <!--<span class="num" v-if="!isLoadingPapers">({{ papers.length }})</span>-->
+        <!--<md-progress-spinner md-mode="indeterminate" :md-diameter="20" :md-stroke="3" v-if="isLoadingPapers"></md-progress-spinner>-->
+      <!--</h2>-->
 
-        <!--<md-field md-clearable class="md-toolbar-section-end">-->
-          <!--<md-input placeholder="Search by PI name..." v-model="search" @input="searchOnTable" />-->
-        <!--</md-field>-->
-      </md-table-toolbar>
+    <!--</div>-->
+
+
+
+
+    <div class="section-header pis">
+      <h2>
+        Principal Investigators
+        <span class="num" v-if="!isLoadingPersons">({{ searchedPersons.length }})</span>
+        <md-progress-spinner md-mode="indeterminate" :md-diameter="20" :md-stroke="3" v-if="isLoadingPersons"></md-progress-spinner>
+      </h2>
+      <p>Click a PI to zoom in.</p>
+
+    </div>
+
+<md-table v-model="searchedPersons" md-sort="name.family" md-sort-order="asc" >
 
       <!--<md-table-empty-state-->
         <!--md-label="No users found"-->
@@ -34,11 +44,10 @@
           </span>
         </md-table-cell>
 
-        <md-table-cell md-label="Papers" md-sort-by="num_papers" md-numeric>{{ item.num_papers }}</md-table-cell>
-        <md-table-cell md-label="Overall Open %" md-sort-by="scores.total" md-numeric>{{ Math.floor(item.scores.total * 100) }}</md-table-cell>
-        <md-table-cell md-label="papers" md-sort-by="scores.papers" md-numeric>{{ Math.floor(item.scores.paper * 100) }}</md-table-cell>
-        <md-table-cell md-label="data" md-sort-by="scores.data" md-numeric>{{ Math.floor(item.scores.data * 100) }}</md-table-cell>
-        <md-table-cell md-label="code" md-sort-by="scores.code" md-numeric>{{ Math.floor(item.scores.code * 100) }}</md-table-cell>
+        <md-table-cell md-label="Total Papers" md-sort-by="num_papers" md-numeric>{{ item.num_papers }}</md-table-cell>
+        <md-table-cell md-label="% Open Papers" md-sort-by="scores.paper" md-numeric>{{ Math.floor(item.scores.paper * 100) }}</md-table-cell>
+        <md-table-cell md-label="% Open Data" md-sort-by="scores.data" md-numeric>{{ Math.floor(item.scores.data * 100) }}</md-table-cell>
+        <md-table-cell md-label="% Open Code" md-sort-by="scores.code" md-numeric>{{ Math.floor(item.scores.code * 100) }}</md-table-cell>
 
 
         <!--<md-table-cell md-label="Email" md-sort-by="email">{{ item.name.family }}</md-table-cell>-->
@@ -71,10 +80,12 @@
     export default {
         name: 'home',
         data: () => ({
-            isLoading: true,
+            isLoadingPapers: true,
+            isLoadingPersons: true,
             persons: [],
             search: null,
-            searchedPersons: []
+            searchedPersons: [],
+            papers: []
         }),
         components: {
             axios
@@ -93,12 +104,25 @@
                     .then(resp => {
                         this.persons = resp.data.results
                         this.searchedPersons = this.persons
-                        this.loading = false
+                        this.isLoadingPersons = false
                         console.log("got this back: ", this.persons)
                     })
                     .catch(e => {
                         console.log("error from server", e)
-                        this.loading = false
+                        this.isLoadingPersons = false
+                    })
+            },
+            loadPapers() {
+                console.log("loading papers!")
+                let url = "http://osat-api.herokuapp.com/papers"
+                axios.get(url)
+                    .then(resp => {
+                        this.papers = resp.data.results
+                        this.isLoadingPapers = false
+                    })
+                    .catch(e => {
+                        console.log("error from server", e)
+                        this.isLoadingPapers = false
                     })
             },
             goToPerson(id){
@@ -107,7 +131,11 @@
             }
         },
         mounted() {
-            this.loadPersons()
+            if (this.persons.length === 0) {
+              this.loadPersons()
+              this.loadPapers()
+
+            }
         }
     }
 </script>
@@ -115,13 +143,28 @@
 
 <style scoped lang="scss">
 
-  .suffix-names {
-    font-size: 50%;
+  td {
+    cursor: pointer;
   }
-  h2 span.num {
-    font-size: 50%;
+
+  .suffix-names {
+    font-size: 70%;
+  }
+  .section-header.pis {
+    h2 {
+      margin: 0;
+      span.num {
+        font-size: 50%;
+      }
+
+    }
+    p {
+      margin: 0;
+      font-size: 12px;
+    }
 
   }
+
 
 
 

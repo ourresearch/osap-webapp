@@ -60,7 +60,7 @@
     font-size: 18px;
     line-height: 1.5;
     max-width: 800px;
-    margin: 0 auto;
+    margin: 50px auto;
     padding-bottom: 100px;
     min-height: 80vh;
   }
