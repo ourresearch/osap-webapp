@@ -20,7 +20,7 @@
         <!--:md-description="`No user found for this '${search}' query. Try a different search term or create a new user.`">-->
       <!--</md-table-empty-state>-->
 
-      <md-table-row slot="md-table-row" slot-scope="{ item }">
+      <md-table-row slot="md-table-row" slot-scope="{ item }" v-on:click="goToPerson(item.id)">
         <md-table-cell md-label="Name" md-sort-by="name.family">
           <span class="given-names">
             {{ item.name.given }}
@@ -55,6 +55,7 @@
 
 <script>
     import axios from 'axios'
+    import router from 'vue-router'
     const toLower = text => {
       return text.toString().toLowerCase()
     }
@@ -99,6 +100,10 @@
                         console.log("error from server", e)
                         this.loading = false
                     })
+            },
+            goToPerson(id){
+                console.log("go to person", id)
+                this.$router.push("/person/" + id)
             }
         },
         mounted() {
@@ -111,7 +116,7 @@
 <style scoped lang="scss">
 
   .suffix-names {
-    font-size: 8px;
+    font-size: 50%;
   }
   h2 span.num {
     font-size: 50%;
