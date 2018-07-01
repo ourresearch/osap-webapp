@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Meta from 'vue-meta'
 
-import Serp from './views/Serp'
+import Person from './views/Person'
 import Home from './views/Home'
 
 Vue.use(Router)
@@ -21,8 +21,8 @@ export default new Router({
     },
 
     {
-      path: '/search/:q',
-      component: Serp
+      path: '/person/:id',
+      component: Person
     }
   ]
 })
