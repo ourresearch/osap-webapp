@@ -36,7 +36,7 @@
 
         <md-table-cell md-label="Papers" md-sort-by="num_papers" md-numeric>{{ item.num_papers }}</md-table-cell>
         <md-table-cell md-label="Overall Open %" md-sort-by="scores.total" md-numeric>{{ Math.floor(item.scores.total * 100) }}</md-table-cell>
-        <md-table-cell md-label="papers" md-sort-by="scores.oa" md-numeric>{{ Math.floor(item.scores.oa * 100) }}</md-table-cell>
+        <md-table-cell md-label="papers" md-sort-by="scores.papers" md-numeric>{{ Math.floor(item.scores.papers * 100) }}</md-table-cell>
         <md-table-cell md-label="data" md-sort-by="scores.data" md-numeric>{{ Math.floor(item.scores.data * 100) }}</md-table-cell>
         <md-table-cell md-label="code" md-sort-by="scores.code" md-numeric>{{ Math.floor(item.scores.code * 100) }}</md-table-cell>
 
