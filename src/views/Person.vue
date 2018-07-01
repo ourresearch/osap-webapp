@@ -20,7 +20,7 @@
           </span>
         </h2>
 
-        <md-table v-model="searchedPapers" md-sort="year" md-sort-order="asc" >
+        <md-table v-model="searchedPapers" md-sort="metadata.year" md-sort-order="asc" >
             <md-table-toolbar>
                 <div class="md-toolbar-section-start">
                     <h3>
@@ -41,6 +41,9 @@
             <!--</md-table-empty-state>-->
 
             <md-table-row slot="md-table-row" slot-scope="{ item }">
+                <md-table-cell md-label="year" md-sort-by="metadata.year">
+                    {{ item.metadata.year }}
+                </md-table-cell>
                 <md-table-cell md-label="Title" md-sort-by="metadata.title">
                     {{ item.metadata.title }}
                 </md-table-cell>
