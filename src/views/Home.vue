@@ -19,7 +19,7 @@
         <span class="num" v-if="!isLoadingPersons">({{ searchedPersons.length }})</span>
         <md-progress-spinner md-mode="indeterminate" :md-diameter="20" :md-stroke="3" v-if="isLoadingPersons"></md-progress-spinner>
       </h2>
-      <p>Click a PI to zoom in.</p>
+      <p>Click on an investigator to zoom in.</p>
 
     </div>
 
