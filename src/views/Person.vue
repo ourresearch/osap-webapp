@@ -6,20 +6,20 @@
             <div class="back-link">
                 <router-link to="/">
                     <i class="fas fa-chevron-left"></i>
-                    Principal Investigators
+                    Principal and Lead Investigators
                 </router-link>
             </div>
             <h2 class="page-heading">
                 <span class="given-names">
-                {{ name.given }}
-                {{ name.middle }}
-              </span>
+                    {{ name.given }}
+                    {{ name.middle }}
+                </span>
                 <span class="family-names">
-                {{ name.family }}
-              </span>
-                <span class="suffix-names">
-                {{ name.suffix }}
-              </span>
+                    {{ name.family }}
+                </span>
+                <!--<span class="suffix-names">-->
+                    <!--{{ name.suffix }}-->
+                <!--</span>-->
             </h2>
         </div>
 

@@ -15,7 +15,7 @@
 
     <div class="section-header pis">
       <h2>
-        Principal Investigators
+        Principal and Lead Investigators
         <span class="num" v-if="!isLoadingPersons">({{ searchedPersons.length }})</span>
         <md-progress-spinner md-mode="indeterminate" :md-diameter="20" :md-stroke="3" v-if="isLoadingPersons"></md-progress-spinner>
       </h2>
@@ -39,9 +39,9 @@
           <span class="family-names">
             {{ item.name.family }}
           </span>
-          <span class="suffix-names">
-            {{ item.name.suffix }}
-          </span>
+          <!--<span class="suffix-names">-->
+            <!--{{ item.name.suffix }}-->
+          <!--</span>-->
         </md-table-cell>
 
         <md-table-cell md-label="Total Papers" md-sort-by="num_papers" md-numeric>{{ item.num_papers }}</md-table-cell>
