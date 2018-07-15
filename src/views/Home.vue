@@ -14,12 +14,25 @@
 
 
     <div class="section-header pis">
-      <h2>
-        Principal and Lead Investigators
-        <span class="num" v-if="!isLoadingPersons">({{ searchedPersons.length }})</span>
-        <md-progress-spinner md-mode="indeterminate" :md-diameter="20" :md-stroke="3" v-if="isLoadingPersons"></md-progress-spinner>
-      </h2>
-      <p>Click on an investigator to zoom in.</p>
+      <div class="main-content">
+        <h2>
+          Principal and Lead Investigators
+          <span class="num" v-if="!isLoadingPersons">({{ searchedPersons.length }})</span>
+          <md-progress-spinner md-mode="indeterminate" :md-diameter="20" :md-stroke="3" v-if="isLoadingPersons"></md-progress-spinner>
+        </h2>
+        <p>Click on an investigator to zoom in.</p>
+      </div>
+
+      <div class="spacer"></div>
+
+      <div class="controls">
+        <a href="mailto:team@impactstory.org">Report errors</a>
+        <a href="http://osat-api.herokuapp.com/persons">JSON</a>
+
+      </div>
+
+
+
 
     </div>
 
@@ -150,7 +163,30 @@
   .suffix-names {
     font-size: 70%;
   }
+
+  .section-header {
+    display: flex;
+    margin-bottom: 50px;
+    align-items: flex-end;
+    .content {
+
+    }
+    .spacer {
+      flex: 1;
+    }
+    .controls {
+      font-size: 12px;
+      margin-bottom: 3px;
+      a {
+        padding: 3px 5px;
+      }
+    }
+  }
+
   .section-header.pis {
+
+
+
     h2 {
       margin: 0;
       span.num {
