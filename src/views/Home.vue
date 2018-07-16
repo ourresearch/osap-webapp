@@ -16,7 +16,7 @@
     <div class="section-header pis">
       <div class="main-content">
         <h2>
-          Principal and Lead Investigators
+          Investigators
           <span class="num" v-if="!isLoadingPersons">({{ searchedPersons.length }})</span>
           <md-progress-spinner md-mode="indeterminate" :md-diameter="20" :md-stroke="3" v-if="isLoadingPersons"></md-progress-spinner>
         </h2>
@@ -184,7 +184,7 @@
   }
 
   .section-header.pis {
-
+    border-bottom: 1px solid #eee;
 
 
     h2 {

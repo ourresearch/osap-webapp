@@ -6,7 +6,7 @@
             <div class="back-link">
                 <router-link to="/">
                     <i class="fas fa-chevron-left"></i>
-                    Principal and Lead Investigators
+                    Investigators
                 </router-link>
             </div>
             <h2 class="page-heading">
@@ -50,19 +50,23 @@
                     {{ item.metadata.title }}
                 </md-table-cell>
 
-                <md-table-cell md-label="Paper" md-sort-by="is_open.paper" md-boolean>
-                    <i class="fas fa-check" v-if="item.is_open.paper"></i>
-                    <i class="fas fa-times" v-if="!item.is_open.paper"></i>
+                <md-table-cell md-label="Paper" md-sort-by="open_status.paper">
+                    <i class="fas fa-check" v-if="item.open_status.paper=='open'"></i>
+                    <i class="fas fa-times" v-if="item.open_status.paper=='closed'"></i>
+                    <span class="embargo" v-if="item.open_status.paper=='embargo'">
+                        <i class="fas fa-clock"></i>
+                        <md-tooltip>Open pending embargo</md-tooltip>
+                    </span>
                 </md-table-cell>
 
-                <md-table-cell md-label="Data" md-sort-by="is_open.data" md-boolean>
-                    <i class="fas fa-check" v-if="item.is_open.data"></i>
-                    <i class="fas fa-times" v-if="!item.is_open.data"></i>
+                <md-table-cell md-label="Data" md-sort-by="open_status.data" md-boolean>
+                    <i class="fas fa-check" v-if="item.open_status.data=='open'"></i>
+                    <i class="fas fa-times" v-if="item.open_status.data=='closed'"></i>
                 </md-table-cell>
 
-                <md-table-cell md-label="Code" md-sort-by="is_open.code" md-boolean>
-                    <i class="fas fa-check" v-if="item.is_open.code"></i>
-                    <i class="fas fa-times" v-if="!item.is_open.code"></i>
+                <md-table-cell md-label="Code" md-sort-by="open_status.code" md-boolean>
+                    <i class="fas fa-check" v-if="item.open_status.code=='open'"></i>
+                    <i class="fas fa-times" v-if="item.open_status.code=='closed'"></i>
                 </md-table-cell>
 
 
@@ -176,15 +180,15 @@
         h2 {
             margin: 0;
         }
-        .suffix-names {
-            font-size: 50%;
-        }
+        border-bottom: 1px solid #333;
+        margin-bottom: 60px;
     }
     .section-header {
         display: flex;
-        margin-bottom: 50px;
+        margin-bottom: 20px;
         align-items: flex-end;
         margin-top: 10px;
+        border-bottom: 1px solid #eee;
         h3 {
             margin: 0;
         }
@@ -213,6 +217,9 @@
     }
     .fa-check {
         color: green;
+    }
+    .fa-clock {
+        color: gold;
     }
 
     td {
