@@ -25,11 +25,18 @@
 
 
         <div class="section-header">
-            <h3>
-                Papers
-                <span class="num">({{ searchedPapers.length }})</span>
-            </h3>
-            <p>Click a paper to view it on PubMed</p>
+            <div class="main-content">
+                <h3>
+                    Papers
+                    <span class="num">({{ searchedPapers.length }})</span>
+                </h3>
+                <p>Click a paper to view it on PubMed</p>
+            </div>
+            <div class="spacer"></div>
+            <div class="controls">
+                <a href="mailto:team@impactstory.org">Report errors</a>
+                <a :href="'http://osat-api.herokuapp.com/person/' + personId">JSON</a>
+            </div>
         </div>
 
         <md-table v-model="searchedPapers" md-sort="metadata.year" md-sort-order="asc" >
@@ -122,6 +129,9 @@
                 else {
                     return "Unknown name"
                 }
+            },
+            personId() {
+                return this.$route.params.id
             }
         },
         methods: {
@@ -130,8 +140,7 @@
             },
             loadPapers() {
                 console.log("loading papers!")
-                let personId = this.$route.params.id
-                let url = "http://osat-api.herokuapp.com/person/" + personId
+                let url = "http://osat-api.herokuapp.com/person/" + this.personId
                 axios.get(url)
                     .then(resp => {
 
@@ -172,6 +181,9 @@
         }
     }
     .section-header {
+        display: flex;
+        margin-bottom: 50px;
+        align-items: flex-end;
         margin-top: 10px;
         h3 {
             margin: 0;
@@ -179,6 +191,19 @@
         p {
             margin: 0;
             font-size: 12px;
+        }
+        .content {
+
+        }
+        .spacer {
+          flex: 1;
+        }
+        .controls {
+          font-size: 12px;
+          margin-bottom: 3px;
+          a {
+            padding: 3px 5px;
+          }
         }
     }
 
