@@ -64,7 +64,7 @@
     line-height: 1.5;
     max-width: 800px;
     margin: 50px auto;
-    padding-bottom: 100px;
+    padding: 0 10px 100px;
     min-height: 80vh;
   }
 
