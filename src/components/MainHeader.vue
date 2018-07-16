@@ -2,9 +2,9 @@
     <md-toolbar class="main-header">
         <div class="brands">
             <a class="us" href="/">
-                <span class="main">OSCAR</span>
+                <span class="main">OSAP</span>
                 <span class="extra">
-                     open science compliance and assessment report
+                     the open science assessment project
                 </span>
             </a>
             <a class="institution" href="./">National Institute of Mental Health</a>
