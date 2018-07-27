@@ -146,9 +146,9 @@
 
                         let papers = resp.data.papers.map(function(paper){
                             let ret = paper
-                            ret.is_open.paper = paper.open_status.paper=="open" + 0
-                            ret.is_open.data = paper.open_status.data=="open" + 0
-                            ret.is_open.code = paper.open_status.code=="open" + 0
+                            ret.is_open.paper = paper.is_open.paper + 0
+                            ret.is_open.data = paper.is_open.data + 0
+                            ret.is_open.code = paper.is_open.code + 0
                             return ret
                         })
 
