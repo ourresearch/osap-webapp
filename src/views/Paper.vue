@@ -12,13 +12,20 @@
             <h2 class="page-heading">
                 {{ biblio.title }}
             </h2>
+            <div class="biblio-line">
+                {{biblio.authors}}
+            </div>
+            <div class="biblio-line">
+                <span class="year">{{biblio.year}} </span>
+                <span class="journal">{{biblio.journal}}</span>
+            </div>
         </div>
 
 
         <div class="section-header">
             <div class="main-content">
                 <h3>
-                    Papers
+                    Open status
                 </h3>
             </div>
             <div class="spacer"></div>
@@ -27,6 +34,33 @@
                 <a :href="'http://osat-api.herokuapp.com/paper/' + paperId">JSON</a>
             </div>
         </div>
+
+        <div class="open-type" v-for="(val, name) in openStatus">
+            <span class="open-type">
+                {{ name }} is
+            </span>
+            <span class="na val" v-if="val=='na'">
+                <span class="icon">NA </span>
+                <strong>Not applicable </strong>
+                <span class="paren">(The resource doesn't exist at all, or is impossible to share.)</span>
+            </span>
+            <span class="open val" v-if="val=='open'">
+                <i class="fas fa-check"></i>
+                <strong>Open </strong>
+                <span class="paren">(The resource is free for anyone to download and use)</span>
+            </span>
+            <span class="na closed" v-if="val=='closed'">
+                <i class="fas fa-times"></i>
+                <strong>Closed </strong>
+                <span class="paren">(We couldn't find evidence of an openly shared copy.)</span>
+            </span>
+            <span class="na embargo" v-if="val=='embargo'">
+                <i class="fas fa-hourglass-half"></i>
+                <strong>Embargoed </strong>
+                <span class="paren">(This will become open after the end of an embargo period.)</span>
+            </span>
+        </div>
+
 
 
 
@@ -43,7 +77,8 @@
         data: () => ({
             isLoading: true,
             personName: "",
-            biblio: {}
+            biblio: {},
+            openStatus: {}
         }),
         components: {
             axios
@@ -89,6 +124,7 @@
                     .then(resp => {
                         console.log("got paper back", resp)
                         this.biblio = resp.data.metadata
+                        this.openStatus = resp.data.open_status
 
                         // let papers = resp.data.papers.map(function(paper){
                         //     let ret = paper
