@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Meta from 'vue-meta'
 
 import Person from './views/Person'
+import Paper from './views/Paper'
 import Home from './views/Home'
 import Faq from './views/Faq'
 
@@ -31,6 +32,11 @@ export default new Router({
     {
       path: '/person/:id',
       component: Person
+    },
+
+    {
+      path: '/person/:personId/paper/:paperId',
+      component: Paper
     },
 
     {

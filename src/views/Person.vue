@@ -42,7 +42,7 @@
         <md-table v-model="searchedPapers" md-sort="metadata.year" md-sort-order="asc" >
 
 
-            <md-table-row slot="md-table-row" slot-scope="{ item }" v-on:click="goToPubmed(item.pmid)">
+            <md-table-row slot="md-table-row" slot-scope="{ item }" v-on:click="viewPaper(item.pmid)">
                 <md-table-cell md-label="year" md-sort-by="metadata.year">
                     {{ item.metadata.year }}
                 </md-table-cell>
@@ -151,8 +151,9 @@
             }
         },
         methods: {
-            goToPubmed(pmid){
-                window.location.href = "https://www.ncbi.nlm.nih.gov/pubmed/" + pmid
+            viewPaper(pmid){
+                let paperUrl = "/person/" + this.$route.params.id +  "/paper/" + pmid
+                this.$router.push(paperUrl)
             },
             loadPapers() {
                 console.log("loading papers!")
