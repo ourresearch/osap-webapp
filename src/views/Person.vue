@@ -54,19 +54,31 @@
                     <i class="fas fa-check" v-if="item.open_status.paper=='open'"></i>
                     <i class="fas fa-times" v-if="item.open_status.paper=='closed'"></i>
                     <span class="embargo" v-if="item.open_status.paper=='embargo'">
-                        <i class="fas fa-clock"></i>
+                        <i class="fas fa-hourglass-half"></i>
                         <md-tooltip>Open pending embargo</md-tooltip>
+                    </span>
+                    <span class="embargo" v-if="item.open_status.paper=='na'">
+                        NA
+                        <md-tooltip>It's impossible for this paper to be open.</md-tooltip>
                     </span>
                 </md-table-cell>
 
                 <md-table-cell md-label="Data" md-sort-by="open_status.data" md-boolean>
                     <i class="fas fa-check" v-if="item.open_status.data=='open'"></i>
                     <i class="fas fa-times" v-if="item.open_status.data=='closed'"></i>
+                    <span class="embargo" v-if="item.open_status.paper=='na'">
+                        NA
+                        <md-tooltip>No data was gathered.</md-tooltip>
+                    </span>
                 </md-table-cell>
 
                 <md-table-cell md-label="Code" md-sort-by="open_status.code" md-boolean>
                     <i class="fas fa-check" v-if="item.open_status.code=='open'"></i>
                     <i class="fas fa-times" v-if="item.open_status.code=='closed'"></i>
+                    <span class="embargo" v-if="item.open_status.paper=='na'">
+                        NA
+                        <md-tooltip>No code was used.</md-tooltip>
+                    </span>
                 </md-table-cell>
 
 
@@ -218,7 +230,7 @@
     .fa-check {
         color: green;
     }
-    .fa-clock {
+    .fa-hourglass-half {
         color: gold;
     }
 
