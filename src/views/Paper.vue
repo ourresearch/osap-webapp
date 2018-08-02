@@ -12,12 +12,22 @@
             <h2 class="page-heading">
                 {{ biblio.title }}
             </h2>
-            <div class="biblio-line">
+            <div class="biblio-line authors">
                 {{biblio.authors}}
             </div>
-            <div class="biblio-line">
+
+            <div class="biblio-line publication">
                 <span class="year">{{biblio.year}} </span>
                 <span class="journal">{{biblio.journal}}</span>
+            </div>
+            <div class="biblio-line linkouts">
+                <a :href="'http://doi.org/' + biblio.doi">Publisher page</a>
+                <span class="sep"> | </span>
+                <a :href="biblio.pubmed_url">PubMed page</a>
+            </div>
+            <div class="abstract biblio-line">
+                <h4>Abstract</h4>
+                {{biblio.abstract}}
             </div>
         </div>
 
@@ -37,7 +47,7 @@
 
         <div class="open-type" v-for="(val, name) in openStatus">
             <span class="open-type">
-                {{ name }} is
+                {{ name }}
             </span>
             <span class="na val" v-if="val=='na'">
                 <span class="icon">NA </span>
@@ -59,6 +69,11 @@
                 <strong>Embargoed </strong>
                 <span class="paren">(This will become open after the end of an embargo period.)</span>
             </span>
+
+            <span class="edit button">
+                edit
+            </span>
+
         </div>
 
 
@@ -97,9 +112,6 @@
             }
         },
         methods: {
-            goToPubmed(pmid){
-                window.location.href = "https://www.ncbi.nlm.nih.gov/pubmed/" + pmid
-            },
             loadPerson() {
                 console.log("loading paper!")
                 let url = "http://osat-api.herokuapp.com/person/" + this.personId
@@ -159,7 +171,7 @@
         h2 {
             margin: 0;
         }
-        border-bottom: 1px solid #333;
+        /*border-bottom: 1px solid #333;*/
         margin-bottom: 60px;
     }
     .section-header {
@@ -187,6 +199,31 @@
           a {
             padding: 3px 5px;
           }
+        }
+    }
+
+    .biblio-line {
+        font-size: 14px;
+    }
+    .abstract {
+        padding-bottom: 10px;
+    }
+    h4 {
+        margin-bottom: 0;
+    }
+
+    .open-type {
+        span.open-type {
+            text-transform: capitalize;
+            width: 4em;
+            font-weight: bold;
+            display: inline-block;
+        }
+        span.val {
+            i {
+                width: 2em;
+                display: inline-block;
+            }
         }
     }
 

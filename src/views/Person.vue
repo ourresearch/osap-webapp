@@ -156,22 +156,15 @@
                 this.$router.push(paperUrl)
             },
             loadPapers() {
-                console.log("loading papers!")
                 let url = "http://osat-api.herokuapp.com/person/" + this.personId
                 axios.get(url)
                     .then(resp => {
+                        console.log("loading papers!", resp.data)
 
-                        let papers = resp.data.papers.map(function(paper){
-                            let ret = paper
-                            ret.is_open.paper = paper.is_open.paper + 0
-                            ret.is_open.data = paper.is_open.data + 0
-                            ret.is_open.code = paper.is_open.code + 0
-                            return ret
-                        })
 
                         this.name = resp.data.name
                         this.webpage = resp.data.nih_webpage
-                        this.searchedPapers = papers
+                        this.searchedPapers = resp.data.papers
                         this.loading = false
                     })
                     .catch(e => {
