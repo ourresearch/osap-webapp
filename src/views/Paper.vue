@@ -47,53 +47,64 @@
 
 
         <div class="open-type-cards">
-            <div class="open-type-card" v-for="(val, name) in openStatus">
-                <div class="open-type-name">
-                    {{ name }}
-                </div>
+            <div class="open-type-card" v-for="(openType) in openTypes">
 
-                <!--NA-->
-                <div class="na val" v-if="val=='na'">
-                    <div class="main">
-                        <span class="icon">NA </span>
-                        <strong>Not applicable </strong>
+                <div class="mode display" v-show="!openType.editMode">
+                    <div class="open-type-name">
+                        {{ openType.name }}
                     </div>
-                    <div class="paren">The resource doesn't exist at all, or is impossible to share.</div>
-                </div>
 
-                <!--open-->
-                <div class="open val" v-if="val=='open'">
-                    <div class="main">
-                        <i class="fas fa-check"></i>
-                        <strong>Open </strong>
+                    <!--NA-->
+                    <div class="na val" v-if="openType.val=='na'">
+                        <div class="main">
+                            <span class="icon">NA </span>
+                            <strong>Not applicable </strong>
+                        </div>
+                        <div class="paren">The resource doesn't exist at all, or is impossible to share.</div>
                     </div>
-                    <div class="paren">The resource is free for anyone to download and use</div>
-                </div>
 
-                <!--closed-->
-                <div class="closed val" v-if="val=='closed'">
-                    <div class="main">
-                        <i class="fas fa-times"></i>
-                        <strong>Closed </strong>
+                    <!--open-->
+                    <div class="open val" v-if="openType.val=='open'">
+                        <div class="main">
+                            <i class="fas fa-check"></i>
+                            <strong>Open </strong>
+                        </div>
+                        <div class="paren">The resource is free for anyone to download and use</div>
                     </div>
-                    <div class="paren">We couldn't find evidence of an openly shared copy.</div>
-                </div>
 
-                <!--embargo-->
-                <div class="closed val" v-if="val=='embargo'">
-                    <div class="main">
-                        <i class="fas fa-hourglass-half"></i>
-                        <strong>Embargoed </strong>
+                    <!--closed-->
+                    <div class="closed val" v-if="openType.val=='closed'">
+                        <div class="main">
+                            <i class="fas fa-times"></i>
+                            <strong>Closed </strong>
+                        </div>
+                        <div class="paren">We couldn't find evidence of an openly shared copy.</div>
                     </div>
-                    <div class="paren">This will become open after the end of an embargo period.</div>
-                </div>
 
-                <div class="edit">
-                    <md-button class="edit md-raised" @click="openOpenEditStatusDialog(name, val)">
+                    <!--embargo-->
+                    <div class="closed val" v-if="openType.val=='embargo'">
+                        <div class="main">
+                            <i class="fas fa-hourglass-half"></i>
+                            <strong>Embargoed </strong>
+                        </div>
+                        <div class="paren">This will become open after the end of an embargo period.</div>
+                    </div>
+
+                    <md-button class="edit md-raised" @click="openType.editMode=true">
                         edit
                     </md-button>
-
                 </div>
+
+
+                <div class="mode edit" v-show="openType.editMode">
+                    edit mode!
+                    <md-button class="save md-raised" @click="openOpenEditStatusDialog(name, val)">
+                        save
+                    </md-button>
+                </div>
+
+
+
 
 
             </div>
@@ -118,7 +129,7 @@
             isLoading: true,
             personName: "",
             biblio: {},
-            openStatus: {}
+            openTypes: {}
         }),
         components: {
             axios
@@ -137,9 +148,6 @@
             }
         },
         methods: {
-            openOpenEditStatusDialog(openType, oldValue) {
-                console.log("open the edit status dialog.", openType, oldValue)
-            },
             loadPerson() {
                 console.log("loading paper!")
                 let url = "http://osat-api.herokuapp.com/person/" + this.personId
@@ -168,7 +176,18 @@
                     .then(resp => {
                         console.log("got paper back", resp)
                         this.biblio = resp.data.metadata
-                        this.openStatus = resp.data.open_status
+
+                        this.openTypes = Object.entries(resp.data.open_status).map(function(namePair){
+                            return {
+                                name: namePair[0],
+                                val: namePair[1],
+                                editMode: false
+                            }
+                        })
+
+                        console.log("opentypes", this.openTypes)
+
+
 
                         // let papers = resp.data.papers.map(function(paper){
                         //     let ret = paper
