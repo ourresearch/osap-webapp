@@ -45,36 +45,61 @@
             </div>
         </div>
 
-        <div class="open-type" v-for="(val, name) in openStatus">
-            <span class="open-type">
-                {{ name }}
-            </span>
-            <span class="na val" v-if="val=='na'">
-                <span class="icon">NA </span>
-                <strong>Not applicable </strong>
-                <span class="paren">(The resource doesn't exist at all, or is impossible to share.)</span>
-            </span>
-            <span class="open val" v-if="val=='open'">
-                <i class="fas fa-check"></i>
-                <strong>Open </strong>
-                <span class="paren">(The resource is free for anyone to download and use)</span>
-            </span>
-            <span class="na closed" v-if="val=='closed'">
-                <i class="fas fa-times"></i>
-                <strong>Closed </strong>
-                <span class="paren">(We couldn't find evidence of an openly shared copy.)</span>
-            </span>
-            <span class="na embargo" v-if="val=='embargo'">
-                <i class="fas fa-hourglass-half"></i>
-                <strong>Embargoed </strong>
-                <span class="paren">(This will become open after the end of an embargo period.)</span>
-            </span>
 
-            <span class="edit button">
-                edit
-            </span>
+        <div class="open-type-cards">
+            <div class="open-type-card" v-for="(val, name) in openStatus">
+                <div class="open-type-name">
+                    {{ name }}
+                </div>
+
+                <!--NA-->
+                <div class="na val" v-if="val=='na'">
+                    <div class="main">
+                        <span class="icon">NA </span>
+                        <strong>Not applicable </strong>
+                    </div>
+                    <div class="paren">The resource doesn't exist at all, or is impossible to share.</div>
+                </div>
+
+                <!--open-->
+                <div class="open val" v-if="val=='open'">
+                    <div class="main">
+                        <i class="fas fa-check"></i>
+                        <strong>Open </strong>
+                    </div>
+                    <div class="paren">The resource is free for anyone to download and use</div>
+                </div>
+
+                <!--closed-->
+                <div class="closed val" v-if="val=='closed'">
+                    <div class="main">
+                        <i class="fas fa-times"></i>
+                        <strong>Closed </strong>
+                    </div>
+                    <div class="paren">We couldn't find evidence of an openly shared copy.</div>
+                </div>
+
+                <!--embargo-->
+                <div class="closed val" v-if="val=='embargo'">
+                    <div class="main">
+                        <i class="fas fa-hourglass-half"></i>
+                        <strong>Embargoed </strong>
+                    </div>
+                    <div class="paren">This will become open after the end of an embargo period.</div>
+                </div>
+
+                <div class="edit">
+                    <md-button class="edit md-raised" @click="openOpenEditStatusDialog(name, val)">
+                        edit
+                    </md-button>
+
+                </div>
+
+
+            </div>
 
         </div>
+
 
 
 
@@ -112,6 +137,9 @@
             }
         },
         methods: {
+            openOpenEditStatusDialog(openType, oldValue) {
+                console.log("open the edit status dialog.", openType, oldValue)
+            },
             loadPerson() {
                 console.log("loading paper!")
                 let url = "http://osat-api.herokuapp.com/person/" + this.personId
@@ -127,6 +155,10 @@
                         this.personName = name
                     })
 
+            },
+            changePaperStatus() {
+            //    paper/26654786/open_status/code
+            //    '{"open_status":"open"}'
             },
 
             loadPaper() {
@@ -212,19 +244,34 @@
         margin-bottom: 0;
     }
 
-    .open-type {
-        span.open-type {
-            text-transform: capitalize;
-            width: 4em;
-            font-weight: bold;
-            display: inline-block;
+    .open-type-cards {
+        display: flex;
+        @media (max-width: 600px) {
+            flex-wrap: wrap;
         }
-        span.val {
-            i {
-                width: 2em;
-                display: inline-block;
+        .open-type-card {
+            border: 1px solid #eee;
+            box-shadow: 1px 1px 3px #ccc;
+            margin: 5px;
+            padding: 10px;
+            width: 350px;
+
+            .open-type-name {
+                font-weight: bold;
+                font-size: 28px;
+                text-transform: capitalize;
+            }
+            .val {
+                .main {
+                    i {margin-right: 3px;}
+                    margin-bottom: 5px;
+                }
+                .paren {
+                    font-size: 14px;
+                }
             }
         }
+
     }
 
 
