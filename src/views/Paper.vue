@@ -161,6 +161,13 @@
 
 
 
+        <md-dialog-alert
+          :md-active.sync="editCompleteDialog"
+          md-title="Edit confirmed"
+          md-content="Thanks for submitting your edit! It has been provisionally accepted and is now queued for moderation."
+          />
+
+
 
 
 
@@ -177,7 +184,8 @@
             personName: "",
             biblio: {},
             products: [],
-            pmid: null
+            pmid: null,
+            editCompleteDialog: false
         }),
         components: {
             axios
@@ -224,6 +232,7 @@
                         console.log("updated this product to have a new open status", resp)
                         this.unlockAllProducts()
                         product.editMode = "display"
+                        this.editCompleteDialog = true
                     })
                     .catch(resp => {
                         console.log("failure :(", resp)
