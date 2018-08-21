@@ -85,7 +85,7 @@
                     </div>
 
                     <!--embargo-->
-                    <div class="closed val" v-if="product.openStatus=='embargo'">
+                    <div class="embargo val" v-if="product.openStatus=='embargo'">
                         <div class="main">
                             <i class="fas fa-hourglass-half"></i>
                             <strong>Embargoed </strong>
@@ -110,7 +110,7 @@
                     <md-field>
                         <label for="status">Status</label>
                         <md-select v-model="product.openStatus" name="status" id="status">
-                            <md-option value="NA">NA (This is impossible to share)</md-option>
+                            <md-option value="NA">NA (This resource can't be shared)</md-option>
                             <md-option value="closed">Closed</md-option>
                             <md-option value="embargo">Embargoed</md-option>
                             <md-option value="open">Open</md-option>
@@ -383,6 +383,21 @@
                 .paren {
                     font-size: 14px;
                 }
+
+                &.open .main {
+                    color: green;
+                }
+                &.closed .main{
+                    color: red;
+                }
+                &.embargo .main{
+                    color: gold;
+                }
+                &.na .main {
+                    color: #555;
+                }
+
+
             }
         }
 
