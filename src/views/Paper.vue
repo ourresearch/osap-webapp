@@ -49,7 +49,7 @@
         <div class="open-type-cards">
             <div class="open-type-card" v-for="(openType) in openTypes">
 
-                <div class="mode display" v-show="!openType.editMode">
+                <div class="mode display" v-show="openType.editMode=='display'">
                     <div class="open-type-name">
                         {{ openType.name }}
                     </div>
@@ -90,14 +90,33 @@
                         <div class="paren">This will become open after the end of an embargo period.</div>
                     </div>
 
-                    <md-button class="edit md-raised" @click="openType.editMode=true">
+                    <md-button :disabled="!!newOpenStatus" class="edit md-raised" @click="setEditMode(openType.name, openType.val)">
                         edit
                     </md-button>
                 </div>
 
 
-                <div class="mode edit" v-show="openType.editMode">
-                    edit mode!
+                <div class="mode edit" v-show="openType.editMode=='edit'">
+                    <div class="open-type-name">
+                        {{ openType.name }}
+                    </div>
+
+                    <md-field>
+                        <label for="status">Status</label>
+                        <md-select v-model="newOpenStatus" name="status" id="status">
+                            <md-option value="NA">NA</md-option>
+                            <md-option value="closed">Closed</md-option>
+                            <md-option value="embargo">Embargoed</md-option>
+                            <md-option value="open">Open</md-option>
+                        </md-select>
+                    </md-field>
+
+                    <md-field>
+                      <label>Comments</label>
+                      <md-textarea v-model="newOpenStatusComment"></md-textarea>
+                    </md-field>
+
+
                     <md-button class="save md-raised" @click="openOpenEditStatusDialog(name, val)">
                         save
                     </md-button>
@@ -129,7 +148,9 @@
             isLoading: true,
             personName: "",
             biblio: {},
-            openTypes: {}
+            openTypes: {},
+            newOpenStatus: null,
+            newOpenStatusComment: null
         }),
         components: {
             axios
@@ -148,6 +169,14 @@
             }
         },
         methods: {
+            setEditMode(name, val) {
+                this.newOpenStatus = val
+                this.openTypes.forEach(function(el){
+                    if (el.name == name){
+                        el.editMode = "edit"
+                    }
+                })
+            },
             loadPerson() {
                 console.log("loading paper!")
                 let url = "http://osat-api.herokuapp.com/person/" + this.personId
@@ -181,7 +210,7 @@
                             return {
                                 name: namePair[0],
                                 val: namePair[1],
-                                editMode: false
+                                editMode: "display"
                             }
                         })
 
