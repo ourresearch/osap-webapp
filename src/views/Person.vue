@@ -30,7 +30,7 @@
                     Papers
                     <span class="num">({{ searchedPapers.length }})</span>
                 </h3>
-                <p>Click a paper to view it on PubMed</p>
+                <p>Click any paper to edit.</p>
             </div>
             <div class="spacer"></div>
             <div class="controls">
