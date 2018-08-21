@@ -46,16 +46,19 @@
         </div>
 
 
-        <div class="open-type-cards">
-            <div class="open-type-card" v-for="(openType) in openTypes">
+        <div class="product-cards">
+            <div class="product-card" :class="{locked: product.isLocked}" v-for="(product) in products">
 
-                <div class="mode display" v-show="openType.editMode=='display'">
-                    <div class="open-type-name">
-                        {{ openType.name }}
+
+
+                <!-- PRODUCT CARD IN DISPLAY MODE -->
+                <div class="mode display" v-show="product.editMode=='display'">
+                    <div class="product-type">
+                        {{ product.type }}
                     </div>
 
                     <!--NA-->
-                    <div class="na val" v-if="openType.val=='na'">
+                    <div class="na val" v-if="product.openStatus=='na'">
                         <div class="main">
                             <span class="icon">NA </span>
                             <strong>Not applicable </strong>
@@ -64,7 +67,7 @@
                     </div>
 
                     <!--open-->
-                    <div class="open val" v-if="openType.val=='open'">
+                    <div class="open val" v-if="product.openStatus=='open'">
                         <div class="main">
                             <i class="fas fa-check"></i>
                             <strong>Open </strong>
@@ -73,7 +76,7 @@
                     </div>
 
                     <!--closed-->
-                    <div class="closed val" v-if="openType.val=='closed'">
+                    <div class="closed val" v-if="product.openStatus=='closed'">
                         <div class="main">
                             <i class="fas fa-times"></i>
                             <strong>Closed </strong>
@@ -82,7 +85,7 @@
                     </div>
 
                     <!--embargo-->
-                    <div class="closed val" v-if="openType.val=='embargo'">
+                    <div class="closed val" v-if="product.openStatus=='embargo'">
                         <div class="main">
                             <i class="fas fa-hourglass-half"></i>
                             <strong>Embargoed </strong>
@@ -90,20 +93,23 @@
                         <div class="paren">This will become open after the end of an embargo period.</div>
                     </div>
 
-                    <md-button :disabled="!!newOpenStatus" class="edit md-raised" @click="setEditMode(openType.name, openType.val)">
+                    <md-button :disabled="anyProductIsBeingEdited" class="edit md-raised" @click="editProduct(product)">
                         edit
                     </md-button>
                 </div>
 
 
-                <div class="mode edit" v-show="openType.editMode=='edit'">
-                    <div class="open-type-name">
-                        {{ openType.name }}
+
+
+                <!-- PRODUCT CARD IN EDIT MODE -->
+                <div class="mode edit" v-show="product.editMode=='edit'">
+                    <div class="product-type">
+                        {{ product.type }}
                     </div>
 
                     <md-field>
                         <label for="status">Status</label>
-                        <md-select v-model="newOpenStatus" name="status" id="status">
+                        <md-select v-model="product.openStatus" name="status" id="status">
                             <md-option value="NA">NA</md-option>
                             <md-option value="closed">Closed</md-option>
                             <md-option value="embargo">Embargoed</md-option>
@@ -113,13 +119,34 @@
 
                     <md-field>
                       <label>Comments</label>
-                      <md-textarea v-model="newOpenStatusComment"></md-textarea>
+                      <md-textarea v-model="product.comment"></md-textarea>
                     </md-field>
 
 
-                    <md-button class="save md-raised" @click="openOpenEditStatusDialog(name, val)">
+                    <md-button class="save md-raised md-primary" @click="saveProduct(product)">
                         save
                     </md-button>
+
+                    <md-button class="cancel md-raised" @click="cancelProductEdit(product)">
+                        cancel
+                    </md-button>
+                </div>
+
+
+
+
+                <!-- PRODUCT CARD IN WORKING MODE -->
+                <div class="mode edit" v-show="product.editMode=='working'">
+                    <div class="product-type">
+                        {{ product.type }}
+                    </div>
+                    <h3>
+                        Saving...
+                    </h3>
+                    <div class="loading">
+                        <md-progress-bar md-mode="indeterminate"></md-progress-bar>
+                    </div>
+
                 </div>
 
 
@@ -148,9 +175,7 @@
             isLoading: true,
             personName: "",
             biblio: {},
-            openTypes: {},
-            newOpenStatus: null,
-            newOpenStatusComment: null
+            products: []
         }),
         components: {
             axios
@@ -166,16 +191,32 @@
             },
             personId() {
                 return this.$route.params.personId
+            },
+            anyProductIsBeingEdited(){
+                return !!this.products.find(function(product){
+                    return product.editMode == "edit"
+                })
             }
         },
         methods: {
-            setEditMode(name, val) {
-                this.newOpenStatus = val
-                this.openTypes.forEach(function(el){
-                    if (el.name == name){
-                        el.editMode = "edit"
-                    }
+            editProduct(product) {
+                this.products.map(function(product){
+                    product.isLocked = true
+                    return product
                 })
+                product.editMode = "edit"
+                product.isLocked = false
+            },
+            saveProduct(product){
+                console.log("save product", product)
+                product.editMode = "working"
+            },
+            cancelProductEdit(product){
+                this.products.map(function(product){
+                    product.isLocked = false
+                    return product
+                })
+                product.editMode = "display"
             },
             loadPerson() {
                 console.log("loading paper!")
@@ -193,10 +234,6 @@
                     })
 
             },
-            changePaperStatus() {
-            //    paper/26654786/open_status/code
-            //    '{"open_status":"open"}'
-            },
 
             loadPaper() {
                 console.log("loading paper!")
@@ -206,15 +243,16 @@
                         console.log("got paper back", resp)
                         this.biblio = resp.data.metadata
 
-                        this.openTypes = Object.entries(resp.data.open_status).map(function(namePair){
+                        this.products = Object.entries(resp.data.open_status).map(function(namePair){
                             return {
-                                name: namePair[0],
-                                val: namePair[1],
-                                editMode: "display"
+                                type: namePair[0],
+                                openStatus: namePair[1],
+                                editMode: "display",
+                                isLocked: false
                             }
                         })
 
-                        console.log("opentypes", this.openTypes)
+                        console.log("products", this.products)
 
 
 
@@ -292,19 +330,24 @@
         margin-bottom: 0;
     }
 
-    .open-type-cards {
+    .product-cards {
         display: flex;
         @media (max-width: 600px) {
             flex-wrap: wrap;
         }
-        .open-type-card {
+        .product-card {
             border: 1px solid #eee;
             box-shadow: 1px 1px 3px #ccc;
             margin: 5px;
             padding: 10px;
             width: 350px;
 
-            .open-type-name {
+            &.locked {
+                opacity: .1;
+                background: #ddd;
+            }
+
+            .product-type {
                 font-weight: bold;
                 font-size: 28px;
                 text-transform: capitalize;
