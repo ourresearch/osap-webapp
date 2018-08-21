@@ -9,7 +9,7 @@
                     <ul class="contact-links">
                         <li>
                             <a href="mailto:team@impactstory.org">
-                                Report errors
+                                Feedback
                             </a>
                         </li>
                         <li>

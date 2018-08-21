@@ -34,7 +34,7 @@
             </div>
             <div class="spacer"></div>
             <div class="controls">
-                <a href="mailto:team@impactstory.org">Report errors</a>
+                <a href="mailto:team@impactstory.org">Feedback</a>
                 <a :href="'http://osat-api.herokuapp.com/person/' + personId">JSON</a>
             </div>
         </div>

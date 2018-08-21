@@ -40,7 +40,7 @@
             </div>
             <div class="spacer"></div>
             <div class="controls">
-                <a href="mailto:team@impactstory.org">Report errors</a>
+                <a href="mailto:team@impactstory.org">Feedback</a>
                 <a :href="'http://osat-api.herokuapp.com/paper/' + paperId">JSON</a>
             </div>
         </div>
@@ -58,7 +58,7 @@
                     </div>
 
                     <!--NA-->
-                    <div class="na val" v-if="product.openStatus=='na'">
+                    <div class="na val" v-if="product.openStatus=='NA'">
                         <div class="main">
                             <span class="icon">NA </span>
                             <strong>Not applicable </strong>
@@ -110,7 +110,7 @@
                     <md-field>
                         <label for="status">Status</label>
                         <md-select v-model="product.openStatus" name="status" id="status">
-                            <md-option value="NA">NA</md-option>
+                            <md-option value="NA">NA (This is impossible to share)</md-option>
                             <md-option value="closed">Closed</md-option>
                             <md-option value="embargo">Embargoed</md-option>
                             <md-option value="open">Open</md-option>
@@ -163,6 +163,7 @@
 
 
 
+
     </div>
 </template>
 
@@ -175,7 +176,8 @@
             isLoading: true,
             personName: "",
             biblio: {},
-            products: []
+            products: [],
+            pmid: null
         }),
         components: {
             axios
@@ -200,23 +202,43 @@
         },
         methods: {
             editProduct(product) {
-                this.products.map(function(product){
-                    product.isLocked = true
-                    return product
-                })
+                this.un
                 product.editMode = "edit"
                 product.isLocked = false
             },
             saveProduct(product){
                 console.log("save product", product)
                 product.editMode = "working"
+                let productType = product.type
+                let pmid = this.pmid
+
+                let cargo = {
+                    open_status: product.openStatus,
+                    comment: product.comment
+                }
+
+                product.open_status = product.openStatus // server needs this
+                let url = `http://osat-api.herokuapp.com/paper/${pmid}/open_status/${productType}`
+                axios.post(url, cargo)
+                    .then(resp => {
+                        console.log("updated this product to have a new open status", resp)
+                        this.unlockAllProducts()
+                        product.editMode = "display"
+                    })
+                    .catch(resp => {
+                        console.log("failure :(", resp)
+                        alert("Sorry, something went wrong! Please let us know at team@impactstory.org")
+                    })
             },
             cancelProductEdit(product){
+                this.unlockAllProducts()
+                product.editMode = "display"
+            },
+            unlockAllProducts(){
                 this.products.map(function(product){
                     product.isLocked = false
                     return product
                 })
-                product.editMode = "display"
             },
             loadPerson() {
                 console.log("loading paper!")
@@ -242,6 +264,7 @@
                     .then(resp => {
                         console.log("got paper back", resp)
                         this.biblio = resp.data.metadata
+                        this.pmid = resp.data.pmid
 
                         this.products = Object.entries(resp.data.open_status).map(function(namePair){
                             return {
