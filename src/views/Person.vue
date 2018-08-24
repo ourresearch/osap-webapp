@@ -50,6 +50,8 @@
                     {{ item.metadata.title }}
                 </md-table-cell>
 
+
+                <!-- paper -->
                 <md-table-cell md-label="Paper" md-sort-by="open_status.paper">
                     <i class="fas fa-check" v-if="item.open_status.paper=='open'"></i>
                     <i class="fas fa-times" v-if="item.open_status.paper=='closed'"></i>
@@ -63,19 +65,29 @@
                     </span>
                 </md-table-cell>
 
+                <!-- data -->
                 <md-table-cell md-label="Data" md-sort-by="open_status.data" md-boolean>
                     <i class="fas fa-check" v-if="item.open_status.data=='open'"></i>
                     <i class="fas fa-times" v-if="item.open_status.data=='closed'"></i>
-                    <span class="embargo" v-if="item.open_status.paper=='na'">
+                    <span class="embargo" v-if="item.open_status.data=='embargo'">
+                        <i class="fas fa-hourglass-half"></i>
+                        <md-tooltip>Open pending embargo</md-tooltip>
+                    </span>
+                    <span class="embargo" v-if="item.open_status.data=='na'">
                         NA
                         <md-tooltip>No data was gathered.</md-tooltip>
                     </span>
                 </md-table-cell>
 
+                <!-- code -->
                 <md-table-cell md-label="Code" md-sort-by="open_status.code" md-boolean>
                     <i class="fas fa-check" v-if="item.open_status.code=='open'"></i>
                     <i class="fas fa-times" v-if="item.open_status.code=='closed'"></i>
-                    <span class="embargo" v-if="item.open_status.paper=='na'">
+                    <span class="embargo" v-if="item.open_status.code=='embargo'">
+                        <i class="fas fa-hourglass-half"></i>
+                        <md-tooltip>Open pending embargo</md-tooltip>
+                    </span>
+                    <span class="embargo" v-if="item.open_status.code=='na'">
                         NA
                         <md-tooltip>No code was used.</md-tooltip>
                     </span>
