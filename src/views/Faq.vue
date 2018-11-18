@@ -7,7 +7,7 @@
             </h2>
         </div>
 
-        <h3>What papers are included in OSCAR?</h3>
+        <h3>What papers are included in the faculty profiles?</h3>
         <p>
             We've included all papers submitted as part of an <a href="https://intramural.nih.gov/">Annual NIH Report</a> in the last five years by NIMH Principal Investigators.
         </p>
