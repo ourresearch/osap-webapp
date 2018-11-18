@@ -36,7 +36,7 @@
 
             <div class="col md-layout-item md-size-40 md-xsmall-size-100 about">
                 <div class="made-by">
-                    Built with <i class="far fa-heart"></i> by <a href="http://impactstory.org">Impactstory</a>, <br> using open data from
+                    Built with <i class="far fa-heart"></i> by <a href="https://impactstory.org">Impactstory</a>, <br> using open data from
                     <a href="https://unpaywall.org">Unpaywall.</a>
                 </div>
                 <hr>

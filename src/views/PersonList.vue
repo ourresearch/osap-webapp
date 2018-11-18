@@ -27,7 +27,7 @@
 
       <div class="controls">
         <a href="mailto:team@impactstory.org">Feedback</a>
-        <a href="http://osat-api.herokuapp.com/persons">JSON</a>
+        <a href="https://osat-api.herokuapp.com/persons">JSON</a>
 
       </div>
 
@@ -112,7 +112,7 @@
         methods: {
             loadPersons() {
                 console.log("loading persons!")
-                let url = "http://osat-api.herokuapp.com/persons"
+                let url = "https://osat-api.herokuapp.com/persons"
                 axios.get(url)
                     .then(resp => {
                         this.persons = resp.data.results
@@ -127,7 +127,7 @@
             },
             loadPapers() {
                 console.log("loading papers!")
-                let url = "http://osat-api.herokuapp.com/papers"
+                let url = "https://osat-api.herokuapp.com/papers"
                 axios.get(url)
                     .then(resp => {
                         this.papers = resp.data.results
