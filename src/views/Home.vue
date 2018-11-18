@@ -6,14 +6,15 @@
       the National Institutes of Mental Health
       </h2>
       <div class="more">
+        <div class="buttons">
+          <button class="md-raised md-primary" to="investigators">
+            View investigators
+          </button>
 
-        <button class="md-raised" to="investigators">
-          View investigators
-        </button>
-
-        <button class="md-raised" to="faq">
-          View FAQ
-        </button>
+          <button class="md-raised" to="faq">
+            View FAQ
+          </button>
+        </div>
 
         <p>
           This project is a collaboration between the nonprofit <a href="https://impactstory.org">Impactstory</a> and the <a
@@ -57,6 +58,23 @@
 
 
 <style scoped lang="scss">
+
+  .page.home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vm;
+    .content {
+      max-width: 600px;
+      .buttons {
+        margin-bottom: 30px;
+      }
+      p {
+        font-size: 18px;
+      }
+    }
+
+  }
 
 
 
