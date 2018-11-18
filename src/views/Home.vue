@@ -7,23 +7,23 @@
       </h2>
       <div class="more">
         <div class="buttons">
-          <button class="md-raised md-primary" to="investigators">
+          <md-button class="md-raised md-button md-primary" to="investigators">
             View investigators
-          </button>
+          </md-button>
 
-          <button class="md-raised" to="faq">
+          <md-button class="md-raised md-button" to="faq">
             View FAQ
-          </button>
+          </md-button>
         </div>
 
         <p>
           This project is a collaboration between the nonprofit <a href="https://impactstory.org">Impactstory</a> and the <a
-                href="https://example.com">National Institutes of Mental Health,</a> part of the <a
-                href="http://example.com">US National Institutes of Health.</a>
+                href="https://www.nimh.nih.gov/index.shtml">National Institutes of Mental Health,</a> part of the <a
+                href="https://www.nimh.nih.gov/index.shtml">US National Institutes of Health.</a>
         </p>
         <p>
           Our goal is to create a system that will help decision-makers track, and ultimately reward, all kinds of <a
-                href="https://example.com">open science</a> practices from faculty at any institution. For now, we're in the trial stage, and limited to use with NIMH intramural researchers. For now we track just three practices: open sharing of papers (open access), data, and code. Please interpret results with caution since we're still in the trial stage.
+                href="https://en.wikipedia.org/wiki/Open_science">open science</a> practices from faculty at any institution. For now, we're in the trial stage, and limited to use with NIMH intramural researchers. For now we track just three practices: open sharing of papers (open access), data, and code. Please interpret results with caution since we're still in the trial stage.
         </p>
       </div>
     </div>
