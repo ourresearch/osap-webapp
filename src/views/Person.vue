@@ -4,7 +4,7 @@
 
         <div class="page-header">
             <div class="back-link">
-                <router-link to="/">
+                <router-link to="/investigators">
                     <i class="fas fa-chevron-left"></i>
                     Investigators
                 </router-link>
@@ -35,7 +35,7 @@
             <div class="spacer"></div>
             <div class="controls">
                 <a href="mailto:team@impactstory.org">Feedback</a>
-                <a :href="'https://osat-api.herokuapp.com/person/' + personId">JSON</a>
+                <a :href="'https://osap-api.herokuapp.com/person/' + personId">JSON</a>
             </div>
         </div>
 
@@ -168,7 +168,7 @@
                 this.$router.push(paperUrl)
             },
             loadPapers() {
-                let url = "https://osat-api.herokuapp.com/person/" + this.personId
+                let url = "https://osap-api.herokuapp.com/person/" + this.personId
                 axios.get(url)
                     .then(resp => {
                         console.log("loading papers!", resp.data)

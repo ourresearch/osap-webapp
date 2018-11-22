@@ -41,7 +41,7 @@
             <div class="spacer"></div>
             <div class="controls">
                 <a href="mailto:team@impactstory.org">Feedback</a>
-                <a :href="'https://osat-api.herokuapp.com/paper/' + paperId">JSON</a>
+                <a :href="'https://osap-api.herokuapp.com/paper/' + paperId">JSON</a>
             </div>
         </div>
 
@@ -226,7 +226,7 @@
                 }
 
                 product.open_status = product.openStatus // server needs this
-                let url = `https://osat-api.herokuapp.com/paper/${pmid}/open_status/${productType}`
+                let url = `https://osap-api.herokuapp.com/paper/${pmid}/open_status/${productType}`
                 axios.post(url, cargo)
                     .then(resp => {
                         console.log("updated this product to have a new open status", resp)
@@ -251,7 +251,7 @@
             },
             loadPerson() {
                 console.log("loading paper!")
-                let url = "https://osat-api.herokuapp.com/person/" + this.personId
+                let url = "https://osap-api.herokuapp.com/person/" + this.personId
                 axios.get(url)
                     .then(resp => {
                         console.log("got person back", resp)
@@ -268,7 +268,7 @@
 
             loadPaper() {
                 console.log("loading paper!")
-                let url = "https://osat-api.herokuapp.com/paper/" + this.paperId
+                let url = "https://osap-api.herokuapp.com/paper/" + this.paperId
                 axios.get(url)
                     .then(resp => {
                         console.log("got paper back", resp)
